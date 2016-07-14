@@ -1,0 +1,28 @@
+{
+  "name": "mr_robot",
+  "version": "1.0.0",
+  "description": "IRCbot",
+  "main": "bot.js",
+  "dependencies": {
+    "coffea": "^0.4.24",
+    "xray": "^0.5.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ex1tium/mr.robot_IRCbot.git"
+  },
+  "keywords": [
+    "IRC",
+    "bot"
+  ],
+  "author": "ex1tium",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ex1tium/mr.robot_IRCbot/issues"
+  },
+  "homepage": "https://github.com/ex1tium/mr.robot_IRCbot#readme"
+}
