@@ -22,12 +22,12 @@ client.on('message', function(event) {
     //[#foo] nick: message
     event.reply(event.message); // I'm a parrot
 });
-
-client.on('command', function(event) {
-    if (event.cmd === 'ping') { // respond to `!ping SOMETHING` with `SOMETHING`, or `pong`, if SOMETHING is not specified
-        event.reply(event.args.length > 0 ? event.args.join(' ') : 'pong');
-    }
-});
+// 
+// client.on('command', function(event) {
+//     if (event.cmd === 'ping') { // respond to `!ping SOMETHING` with `SOMETHING`, or `pong`, if SOMETHING is not specified
+//         event.reply(event.args.length > 0 ? event.args.join(' ') : 'pong');
+//     }
+// });
 
 client.on('error', function(err, event) {
     console.log(event.name, err.stack);
