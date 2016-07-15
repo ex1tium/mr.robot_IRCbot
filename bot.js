@@ -1,4 +1,4 @@
-console.log("Starting program");
+console.log("Starting bot");
 
 var client = require('coffea')({
     host: 'irc.quakenet.org',
@@ -17,11 +17,11 @@ client.on('motd', function(err, event) {
     client.join(['#bottitesti'], event.network);
 });
 
-client.on('message', function(event) {
-    console.log('[' + event.channel.getName() + '] ' + event.user.getNick() + ': ' + event.message);
-    //[#foo] nick: message
-    event.reply(event.message); // I'm a parrot
-});
+// client.on('message', function(event) {
+//     console.log('[' + event.channel.getName() + '] ' + event.user.getNick() + ': ' + event.message);
+//     //[#foo] nick: message
+//     event.reply(event.message); // I'm a parrot
+// });
 
 client.on('command', function(event) {
     if (event.cmd === 'ping') { // respond to `!ping SOMETHING` with `SOMETHING`, or `pong`, if SOMETHING is not specified
@@ -33,4 +33,4 @@ client.on('error', function(err, event) {
     console.log(event.name, err.stack);
 });
 
-console.log("Ending progam");
+console.log("Bot running");
