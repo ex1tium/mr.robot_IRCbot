@@ -1,4 +1,4 @@
-console.log("Starting point");
+console.log("Starting program");
 
 var client = require('coffea')({
     host: 'irc.quakenet.org',
