@@ -20,6 +20,7 @@ var client = require('coffea')({
     throttling: 250 // default value: 250ms, 1 message every 250ms, disable by $
 });
 
+//wip
 var forecast = new Forecast({
     service: 'darksky',
     key: 'your-api-key',
@@ -31,6 +32,7 @@ var forecast = new Forecast({
     }
 });
 
+//wip
 var geocoder = NodeGeocoder(options);
 var options = {
     provider: 'google',
@@ -58,7 +60,6 @@ client.on('message', function(err, event) {
         var returnURLfromString = regExUrlCheck.exec(event.message);
         var parsedURL = returnURLfromString[1].toString();
 
-        //WIP
         if (checkForYoutubeURL === true) {
             var youtubeId = getYouTubeID(parsedURL);
 
@@ -88,7 +89,6 @@ client.on('message', function(err, event) {
     else {
         logChannelToConsole();
     }
-
 });
 
 //WEATHER WIP
