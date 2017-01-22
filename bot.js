@@ -61,7 +61,7 @@ client.on('message', function(err, event) {
         var parsedURL = returnURLfromString[1].toString();
 
         if (checkForYoutubeURL === true) {
-            var youtubeId = getYouTubeID(parsedURL);
+            var youtubeId = getYouTubeID(parsedURL, {fuzzy: false});
 
             fetchVideoInfo(youtubeId, function(err, videoInfo) {
                 if (!err) {
