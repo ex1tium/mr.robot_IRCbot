@@ -66,6 +66,8 @@ client.on('message', function(err, event) {
                     console.log(parsedURL + " " + title.trim());
                 }
             });
+        } else {
+            
         }
 
     }
