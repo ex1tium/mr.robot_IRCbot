@@ -7,7 +7,6 @@ var fetchVideoInfo = require('youtube-info');
 var getYouTubeID = require('get-youtube-id');
 var secToMin = require('sec-to-min');
 
-
 var client = require('coffea')({
     host: 'irc.quakenet.org',
     port: 6667, // default value: 6667
@@ -42,98 +41,54 @@ var options = {
     formatter: null // 'gpx', 'string', ... 
 };
 
-
-//title/youtube WIP
+//title/youtube WORKING
 client.on('message', function(err, event) {
     //Regexp for URL detection
-    var regexUrlCheck = new RegExp(/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i);
-    var checkForURL = regexUrlCheck.test(event.message);
-    var messageBold = c.bold
+    var regExUrlCheck = new RegExp(/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i);
+    var regExYoutube = new RegExp(/^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/i);
+    var checkForURL = regExUrlCheck.test(event.message);
+    var checkForYoutubeURL = regExYoutube.test(event.message);
+    var messageBold = c.bold;
 
     function logChannelToConsole() {
         console.log('[' + event.channel.getName() + '] ' + event.user.getNick() + ': ' + event.message);
     }
 
     if (checkForURL === true) { //registered message contains URL
-        var returnURLfromString = regexUrlCheck.exec(event.message);
+        var returnURLfromString = regExUrlCheck.exec(event.message);
         var parsedURL = returnURLfromString[1].toString();
 
         //WIP
-        if (true) {
+        if (checkForYoutubeURL === true) {
+            var youtubeId = getYouTubeID(parsedURL);
+
+            fetchVideoInfo(youtubeId, function(err, videoInfo) {
+                if (!err) {
+                    //console.log(videoInfo);
+                    var yTitle = videoInfo.title;
+                    var yUploader = videoInfo.owner;
+                    var yDate = videoInfo.datePublished;
+                    var yDuration = secToMin(videoInfo.duration);
+                    var yViews = videoInfo.views;
+
+                    event.reply(c.bold("Title: " + yTitle + " // Uploader: " + yUploader + " // Date: " + yDate + " // Duration: " + yDuration + " // Views: " + yViews));
+                    console.log("YOUTUBE LINK: Title: " + yTitle + " // Uploader: " + yUploader + " // Date: " + yDate + " // Duration: " + yDuration + " // Views: " + yViews);
+                }
+            });
+        }
+        else {
             title(parsedURL, function(err, title) { //url-to-title gets passedURL as an argument
                 if (!err) {
                     event.reply(messageBold(title.trim())); //bold, trim removes extra white spaces from returned title
                     console.log(parsedURL + " " + title.trim());
                 }
             });
-        } else {
-            
         }
-
     }
     else {
         logChannelToConsole();
     }
 
-});
-
-//WORKING!!!!
-// client.on('message', function(err, event) {
-//     //Regexp for URL detection
-//     var regexUrlCheck = new RegExp(/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i);
-//     var checkForURL = regexUrlCheck.test(event.message);
-//     var urlStyling = c.bold
-
-//     function logChannelToConsole() {
-//         console.log('[' + event.channel.getName() + '] ' + event.user.getNick() + ': ' + event.message);
-//     }
-
-//     if (checkForURL === true) { //registered message contains URL
-//         var returnURLfromString = regexUrlCheck.exec(event.message);
-//         var parsedURL = returnURLfromString[1].toString();
-
-//         title(parsedURL, function(err, title) { //url-to-title gets passedURL as an argument
-//             if (!err) { //if no errors
-//                 event.reply(urlStyling(title.trim())); //urlStyling = bold, trim removes extra white spaces from returned title
-//                 console.log(parsedURL + " " + title.trim());
-//             }
-//         });
-//     }
-//     else {
-//         logChannelToConsole();
-//     }
-
-// });
-
-
-//Youtube, crashes bot
-//if url is not youtube url
-//TODO code it so that this code only runs if the url is youtube url.
-client.on('message', function(err, event) {
-    var regexUrlCheck = new RegExp(/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i);
-    var checkForURL = regexUrlCheck.test(event.message);
-
-    if (checkForURL === true) {
-        var returnURLfromString = regexUrlCheck.exec(event.message);
-        var parsedURL = returnURLfromString[1].toString();
-        var youtubeId = getYouTubeID(parsedURL);
-
-        fetchVideoInfo(youtubeId, function(err, videoInfo) {
-            if (!err) {
-                
-                //console.log(videoInfo);
-                var yTitle = videoInfo.title;
-                var yUploader = videoInfo.owner;
-                var yDate = videoInfo.datePublished;
-                var yDuration = secToMin(videoInfo.duration);
-                var yViews = videoInfo.views;
-                
-                event.reply(c.bold("Title: " + yTitle + " // Uploader: " + yUploader + " // Date: " + yDate + " // Duration: " + yDuration + " // Views: " + yViews));
-                console.log("YOUTUBE LINK: Title: " + yTitle + " // Uploader: " + yUploader + " // Date: " + yDate + " // Duration: " + yDuration + " // Views: " + yViews);
-
-            }
-        });
-    }
 });
 
 //WEATHER WIP
@@ -157,10 +112,6 @@ client.on('command', function(err, event) {
     }
 
 });
-
-
-
-
 
 client.on('error', function(err, event) {
     console.log(event.name, err.stack);
