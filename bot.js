@@ -6,7 +6,7 @@ var NodeGeocoder = require('node-geocoder');
 var fetchVideoInfo = require('youtube-info');
 var getYouTubeID = require('get-youtube-id');
 var secToMin = require('sec-to-min');
-var string = require("string");
+var config = require('config');
 
 var client = require('coffea')({
     host: 'irc.quakenet.org',
@@ -99,6 +99,7 @@ client.on('message', function(err, event) {
 client.on('message', function(err, event) {
     var msg = event.message;
     var command = msg.split(" ", 2);
+    var city = command[1];
     
     if (command[0].startsWith("!weather") === true ) {
         
@@ -107,7 +108,7 @@ client.on('message', function(err, event) {
         
         //var city = event.cmd;
         console.log(event.message + " was weather");
-        console.log(command);
+        console.log(city);
         
     }
 });
