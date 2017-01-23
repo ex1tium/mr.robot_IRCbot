@@ -6,6 +6,7 @@ var NodeGeocoder = require('node-geocoder');
 var fetchVideoInfo = require('youtube-info');
 var getYouTubeID = require('get-youtube-id');
 var secToMin = require('sec-to-min');
+var string = require("string");
 
 var client = require('coffea')({
     host: 'irc.quakenet.org',
@@ -61,7 +62,9 @@ client.on('message', function(err, event) {
         var parsedURL = returnURLfromString[1].toString();
 
         if (checkForYoutubeURL === true) {
-            var youtubeId = getYouTubeID(parsedURL, {fuzzy: false});
+            var youtubeId = getYouTubeID(parsedURL, {
+                fuzzy: false
+            });
 
             fetchVideoInfo(youtubeId, function(err, videoInfo) {
                 if (!err) {
@@ -93,24 +96,20 @@ client.on('message', function(err, event) {
 
 //WEATHER WIP
 //TODO
-client.on('command', function(err, event) {
-    // var lat;
-    // var long;
-    // var city = event.cmd;
-
-    switch (event.cmd) {
-        case 'weather':
-            // code
-            console.log(event.channel.name, event.user.nick, event.message);
-            // console.log(event.cmd);
-
-            break;
-
-        default:
-            // code
-            console.log("NOT A COMMAND")
+client.on('message', function(err, event) {
+    var msg = event.message;
+    var command = msg.split(" ", 2);
+    
+    if (command[0].startsWith("!weather") === true ) {
+        
+        var lat;
+        var long;
+        
+        //var city = event.cmd;
+        console.log(event.message + " was weather");
+        console.log(command);
+        
     }
-
 });
 
 client.on('error', function(err, event) {
