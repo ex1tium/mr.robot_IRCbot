@@ -7,6 +7,11 @@ var fetchVideoInfo = require('youtube-info');
 var getYouTubeID = require('get-youtube-id');
 var secToMin = require('sec-to-min');
 var config = require('config');
+//var moment = require('moment');
+var moment = require("moment-timezone");
+
+var dskyAPI = config.get('darkSkyApi');
+var geocodeAPI = config.get('googleApi')
 
 var client = require('coffea')({
     host: 'irc.quakenet.org',
@@ -24,12 +29,12 @@ var client = require('coffea')({
 //wip
 var forecast = new Forecast({
     service: 'darksky',
-    key: 'your-api-key',
+    key: dskyAPI,
     units: 'celcius',
     cache: true, // Cache API requests 
     ttl: { // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
         minutes: 30,
-        seconds: 0
+        seconds: 30
     }
 });
 
@@ -40,7 +45,7 @@ var options = {
 
     // Optional depending on the providers 
     httpAdapter: 'https', // Default 
-    apiKey: 'YOUR_API_KEY', // for Mapquest, OpenCage, Google Premier 
+    apiKey: geocodeAPI, // for Mapquest, OpenCage, Google Premier 
     formatter: null // 'gpx', 'string', ... 
 };
 
@@ -94,22 +99,38 @@ client.on('message', function(err, event) {
     }
 });
 
-//WEATHER WIP
+//WEATHER WORKS
 //TODO
 client.on('message', function(err, event) {
     var msg = event.message;
     var command = msg.split(" ", 2);
     var city = command[1];
-    
-    if (command[0].startsWith("!weather") === true ) {
-        
-        var lat;
-        var long;
-        
-        //var city = event.cmd;
-        console.log(event.message + " was weather");
-        console.log(city);
-        
+
+    if (command[0].startsWith("!sää") === true) {
+        geocoder.geocode(city, function(err, result) {
+            var lat = result[0].latitude;
+            var long = result[0].longitude;
+
+            //console.log("Coordinates for " + city + ": " + lat + ", " + long);
+
+            forecast.get([lat, long], function(err, weather) {
+                var wSummary = weather.currently.summary;
+                var wTimezone = weather.timezone;
+                var wTime = moment.unix(weather.currently.time).format("HH:mm");
+                var wTemperature = weather.currently.temperature + "°C";
+                var wFeelsLike = weather.currently.apparentTemperature + "°C";
+                var wCloudCover = Math.round(weather.currently.cloudCover*100) + "%";
+                var wHumidity = weather.currently.humidity * 100 + "%";
+                var wPrecipProbability = weather.currently.precipProbability * 100 + "%";
+                var wPrecipType = weather.currently.precipType;
+                var wWindSpeed = weather.currently.windSpeed + " m/s";
+                var wForecast = weather.daily.summary;
+                
+                event.reply("Weather in " + c.bold(city) + " on " + c.bold(wTime) + " (" + wTimezone + ") is: " + c.bold(wSummary) + " // " + c.bold(wTemperature) + " (feels like " + c.bold(wFeelsLike) + ") // " 
+                            + "Cloud cover: " + c.bold(wCloudCover) + " // Humidity: " + c.bold(wHumidity) + " // Precipitation probability: " + c.bold(wPrecipProbability)
+                            + " // Wind: " + c.bold(wWindSpeed) + " // Forecast: " + c.bold(wForecast));
+            });
+        });
     }
 });
 
