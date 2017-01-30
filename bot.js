@@ -12,7 +12,7 @@ var config = require('config');
 var dskyAPI = config.get('darkSkyApi');
 var geocodeAPI = config.get('googleApi');
 
-var client = require('coffea')({
+var bot = require('coffea')({
     host: 'irc.quakenet.org',
     port: 6667, // default value: 6667
     ssl: false, // set to true if you want to use ssl
@@ -50,7 +50,7 @@ var options = {
 
 
 // Title/Youtube parser
-client.on('message', function(err, event) {
+bot.on('message', function(err, event) {
 
     function logChannelToConsole() {
         console.log('[' + event.channel.getName() + '] ' + event.user.getNick() + ': ' + event.message);
@@ -115,7 +115,7 @@ client.on('message', function(err, event) {
 });
 
 //Weather
-client.on('message', function(err, event) {
+bot.on('message', function(err, event) {
     
     function errorLogging() {
         console.log("Event: " + event.name);
@@ -147,7 +147,7 @@ client.on('message', function(err, event) {
                             var wWindSpeed = weather.currently.windSpeed + " m/s";
                             var wForecast = weather.daily.summary;
 
-                            event.reply("Weather in " + c.bold(city) + " on " + c.bold(wTime) + " (" + wTimezone + ") is: " + c.bold(wSummary) + " // " + c.bold(wTemperature) + " (feels like " + c.bold(wFeelsLike) + ") // " +
+                            event.reply("Weather in " + c.bold(city) + " (" + wTimezone + ") is: " + c.bold(wSummary) + " // " + c.bold(wTemperature) + " (feels like " + c.bold(wFeelsLike) + ") // " +
                                 "Cloud cover: " + c.bold(wCloudCover) + " // Humidity: " + c.bold(wHumidity) + " // Precipitation probability: " + c.bold(wPrecipProbability) +
                                 " // Wind: " + c.bold(wWindSpeed) + " // Forecast: " + c.bold(wForecast));
                         }
@@ -166,6 +166,6 @@ client.on('message', function(err, event) {
     }
 });
 
-client.on('error', function(err, event) {
+bot.on('error', function(err, event) {
     console.log(event.name, err.stack);
 });
