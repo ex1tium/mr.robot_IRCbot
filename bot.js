@@ -16,7 +16,7 @@ var bot = require('coffea')({
     host: 'irc.quakenet.org',
     port: 6667, // default value: 6667
     ssl: false, // set to true if you want to use ssl
-    ssl_allow_invalid: false, // set to true if the server has a custom ssl cer$
+    ssl_allow_invalid: true, // set to true if the server has a custom ssl cer$
     prefix: '!', // used to parse commands and emit on('command') events, defau$
     channels: ['#bottitesti'], // autojoin channels, default: []
     nick: 'mr_robot', // default value: 'coffea' with random number
@@ -114,57 +114,57 @@ bot.on('message', function(err, event) {
     }
 });
 
-//Weather
-bot.on('message', function(err, event) {
+// //Weather
+// bot.on('message', function(err, event) {
     
-    function errorLogging() {
-        console.log("Event: " + event.name);
-        console.log("ERROR: " + err.stack);
-    }
+//     function errorLogging() {
+//         console.log("Event: " + event.name);
+//         console.log("ERROR: " + err.stack);
+//     }
 
-    if (!err) {
-        var msg = event.message;
-        var command = msg.split(" ", 2);
-        var city = command[1];
+//     if (!err) {
+//         var msg = event.message;
+//         var command = msg.split(" ", 2);
+//         var city = command[1];
 
-        if (command[0].startsWith("!sää") === true) {
-            geocoder.geocode(city, function(err, result) {
-                var lat = result[0].latitude;
-                var long = result[0].longitude;
+//         if (command[0].startsWith("!sää") === true) {
+//             geocoder.geocode(city, function(err, result) {
+//                 var lat = result[0].latitude;
+//                 var long = result[0].longitude;
                 
-                if (!err) {
-                    forecast.get([lat, long], function(err, weather) {
-                        if (!err) {
-                            var wSummary = weather.currently.summary;
-                            var wTimezone = weather.timezone;
-                            var wTime = moment.unix(weather.currently.time).format("HH:mm");
-                            var wTemperature = weather.currently.temperature + "°C";
-                            var wFeelsLike = weather.currently.apparentTemperature + "°C";
-                            var wCloudCover = Math.round(weather.currently.cloudCover * 100) + "%";
-                            var wHumidity = weather.currently.humidity * 100 + "%";
-                            var wPrecipProbability = weather.currently.precipProbability * 100 + "%";
-                            var wPrecipType = weather.currently.precipType;
-                            var wWindSpeed = weather.currently.windSpeed + " m/s";
-                            var wForecast = weather.daily.summary;
+//                 if (!err) {
+//                     forecast.get([lat, long], function(err, weather) {
+//                         if (!err) {
+//                             var wSummary = weather.currently.summary;
+//                             var wTimezone = weather.timezone;
+//                             var wTime = moment.unix(weather.currently.time).format("HH:mm");
+//                             var wTemperature = weather.currently.temperature + "°C";
+//                             var wFeelsLike = weather.currently.apparentTemperature + "°C";
+//                             var wCloudCover = Math.round(weather.currently.cloudCover * 100) + "%";
+//                             var wHumidity = weather.currently.humidity * 100 + "%";
+//                             var wPrecipProbability = weather.currently.precipProbability * 100 + "%";
+//                             var wPrecipType = weather.currently.precipType;
+//                             var wWindSpeed = weather.currently.windSpeed + " m/s";
+//                             var wForecast = weather.daily.summary;
 
-                            event.reply("Weather in " + c.bold(city) + " (" + wTimezone + ") is: " + c.bold(wSummary) + " // " + c.bold(wTemperature) + " (feels like " + c.bold(wFeelsLike) + ") // " +
-                                "Cloud cover: " + c.bold(wCloudCover) + " // Humidity: " + c.bold(wHumidity) + " // Precipitation probability: " + c.bold(wPrecipProbability) +
-                                " // Wind: " + c.bold(wWindSpeed) + " // Forecast: " + c.bold(wForecast));
-                        }
-                        else {
-                            errorLogging();
-                        }
-                    });
-                } else {
-                    errorLogging();
-                }
-            });
-        }
-    }
-    else {
-        errorLogging();
-    }
-});
+//                             event.reply("Weather in " + c.bold(city) + " (" + wTimezone + ") is: " + c.bold(wSummary) + " // " + c.bold(wTemperature) + " (feels like " + c.bold(wFeelsLike) + ") // " +
+//                                 "Cloud cover: " + c.bold(wCloudCover) + " // Humidity: " + c.bold(wHumidity) + " // Precipitation probability: " + c.bold(wPrecipProbability) +
+//                                 " // Wind: " + c.bold(wWindSpeed) + " // Forecast: " + c.bold(wForecast));
+//                         }
+//                         else {
+//                             errorLogging();
+//                         }
+//                     });
+//                 } else {
+//                     errorLogging();
+//                 }
+//             });
+//         }
+//     }
+//     else {
+//         errorLogging();
+//     }
+// });
 
 bot.on('error', function(err, event) {
     console.log(event.name, err.stack);
