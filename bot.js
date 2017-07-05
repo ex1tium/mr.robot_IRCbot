@@ -18,7 +18,7 @@ var bot = require('coffea')({
     ssl: false, // set to true if you want to use ssl
     ssl_allow_invalid: true, // set to true if the server has a custom ssl cer$
     prefix: '!', // used to parse commands and emit on('command') events, defau$
-    channels: ['#bottitesti'], // autojoin channels, default: []
+    channels: ['#datanuubit perse'], // autojoin channels, default: []
     nick: 'mr_robot', // default value: 'coffea' with random number
     username: 'mr_robot', // default value: username = nick
     realname: 'Mr. Robot', // default value: realname = nick
