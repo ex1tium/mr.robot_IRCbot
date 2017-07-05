@@ -8,9 +8,9 @@ var getYouTubeID = require('get-youtube-id');
 var secToMin = require('sec-to-min');
 var moment = require("moment-timezone");
 
-var config = require('config');
-var dskyAPI = config.get('darkSkyApi');
-var geocodeAPI = config.get('googleApi');
+// var config = require('config');
+// var dskyAPI = config.get('darkSkyApi');
+// var geocodeAPI = config.get('googleApi');
 
 var bot = require('coffea')({
     host: 'irc.quakenet.org',
@@ -26,25 +26,25 @@ var bot = require('coffea')({
 });
 
 //wip
-var forecast = new Forecast({
-    service: 'darksky',
-    key: dskyAPI,
-    units: 'celcius',
-    cache: true,
-    ttl: {
-        minutes: 30,
-        seconds: 30
-    }
-});
+// var forecast = new Forecast({
+//     service: 'darksky',
+//     key: dskyAPI,
+//     units: 'celcius',
+//     cache: true,
+//     ttl: {
+//         minutes: 30,
+//         seconds: 30
+//     }
+// });
 
 //wip
-var geocoder = NodeGeocoder(options);
-var options = {
-    provider: 'google',
-    httpAdapter: 'https',
-    apiKey: geocodeAPI,
-    formatter: null
-};
+// var geocoder = NodeGeocoder(options);
+// var options = {
+//     provider: 'google',
+//     httpAdapter: 'https',
+//     apiKey: geocodeAPI,
+//     formatter: null
+// };
 
 //functions
 
